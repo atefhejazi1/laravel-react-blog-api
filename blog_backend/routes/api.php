@@ -26,6 +26,7 @@ Route::delete('auth/logout/{token?}', [AuthController::class, 'logout'])
 Route::get('categories/main', [CategoryController::class, 'mainCategories']);
 Route::get('categories/{id}/children', [CategoryController::class, 'children']);
 // Route::apiResource('categories', CategoryController::class);
+
 Route::get('categories', [CategoryController::class, 'index']);
 Route::get('categories/{category}', [CategoryController::class, 'show']);
 

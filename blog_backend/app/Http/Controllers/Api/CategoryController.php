@@ -14,7 +14,7 @@ class CategoryController extends Controller
     public function index()
     {
         return response()->json(
-            Category::with('children')->get(),
+            Category::with('children')->paginate(10),
             200
         );
     }
@@ -24,7 +24,7 @@ class CategoryController extends Controller
     {
         $categories = Category::with('children')
             ->whereNull('parent_id')
-            ->get();
+            ->paginate(10);
 
 
         return response()->json($categories, 200);

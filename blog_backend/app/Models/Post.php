@@ -41,4 +41,12 @@ class Post extends Model
     {
         return $query->where('status', $status);
     }
+
+    public function scopeSearch($query, $term)
+    {
+        if ($term) {
+            return $query->where('title', 'like', "%{$term}%");
+        }
+        return $query;
+    }
 }

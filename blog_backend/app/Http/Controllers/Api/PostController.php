@@ -27,7 +27,11 @@ class PostController extends Controller
             $query->byAuthor($request->user_id);
         }
 
-        $posts = $query->orderBy('created_at', 'desc')->get();
+        if ($request->has('search')) {
+            $query->search($request->search);
+        }
+
+        $posts = $query->orderBy('created_at', 'desc')->paginate(10);
 
         return response()->json($posts, 200);
     }
