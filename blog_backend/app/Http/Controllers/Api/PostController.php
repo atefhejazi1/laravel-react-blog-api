@@ -44,14 +44,23 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title'       => 'required|string|max:255',
-            'body'        => 'required|string',
+            'title' => 'required|string|max:255',
+            'body' => 'required|string',
             'category_id' => 'required|exists:categories,id',
-            'user_id'     => 'nullable|exists:users,id',
-            'status'      => 'in:draft,published,archived',
+            'status' => 'required|in:draft,published,archived',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $post = Post::create($request->all());
+        $data = $request->all();
+
+        if ($request->hasFile('image')) {
+            $imageName = time() . '_' . $request->file('image')->getClientOriginalName();
+            // $request->file('image')->move(public_path('posts'), $imageName);
+            $request->file('image')->storeAs('public/posts', $imageName);
+            $data['image'] = $imageName;
+        }
+
+        $post = Post::create($data);
 
         return response()->json($post, 201);
     }
